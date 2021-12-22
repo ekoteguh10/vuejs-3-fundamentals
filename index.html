@@ -9,15 +9,15 @@
 </head>
 <body>
     <div id="shopping-list">
-        <h1>{{ header }}</h1>
-        <input v-model="header">
+        <!-- You can use header.toLocaleUpperCase() to make the header is capitalized-->
+        <h1>{{ header ? header: 'Welcome to Shopping List' }}</h1>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
         const shoppingList = Vue.createApp({
             data() {
                 return {
-                    header: "Vue is ready for party!"
+                    header: "Shopping List App"
                 }
             }
         }).mount("#shopping-list")
