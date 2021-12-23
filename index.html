@@ -35,8 +35,8 @@
                 type="text" 
                 v-model,trim="newItem" 
                 placeholder="Add an Item">
-            <label for="newItemPriority">
-                <input type="checkbox" v-model="newItemPriority">
+            <label for="newItemHighPriority">
+                <input type="checkbox" v-model="newItemHighPriority">
                 High Priority
             </label>
             <!-- Add v-bind:disabled or just using :disabled to bind HTML attribute-->
@@ -52,9 +52,14 @@
             Nice job! You've bought all your items.
         </p>
         <!-- List Rendering in Vue.js 3 -->
+        <!-- Dynamically rendering CSS classes -->
         <ul>
-            <li v-for="item in items" :key="item.id">
-                <input type="checkbox" v-model="item.priority">
+            <li 
+                v-for="item in items" 
+                :key="item.id"
+                @click="togglePurchased(item)"
+                class="static-class"
+                :class="{strikeout: item.purchased, priority: item.highPriority}">
                 {{ item.label }}
             </li>
         </ul>
@@ -68,12 +73,12 @@
                     header: "Shopping List App",
                     editing: false,
                     newItem: '',
-                    newItemPriority: false,
+                    newItemHighPriority: false,
                     // Initialize items
                     items: [
-                        // {id: 1, label: "10 party hats", priority: true},
-                        // {id: 2, label: "2 board games", priority: true},
-                        // {id: 3, label: "20 cups", priority: false}
+                        // {id: 1, label: "10 party hats", purchased: false, highPriority: true},
+                        // {id: 2, label: "2 board games", purchased: true, highPriority: true},
+                        // {id: 3, label: "20 cups", purchased: false, highPriority: false}
                     ]
                 }
             },
@@ -81,15 +86,26 @@
                 // handling duplicated method of pushing the item
                 // by add new method to push the item and clean the form after pushing
                 saveItem() {
-                    this.items.push({id: this.items.length + 1, label: this.newItem, priority: this.newItemPriority})
+                    this.items.push(
+                        {
+                            id: this.items.length + 1, 
+                            label: this.newItem, 
+                            purchased: false,
+                            highPriority: this.newItemHighPriority
+                        }
+                    )
                     this.newItem = ''
-                    this.newItemPriority = false
+                    this.newItemHighPriority = false
                 },
                 // add new method to show edit form
                 doEdit(editing) {
                     this.editing = editing
                     this.newItem = ''
-                    this.newItemPriority = false
+                    this.newItemHighPriority = false
+                },
+                // update the css of the list
+                togglePurchased(item) {
+                    item.purchased = !item.purchased
                 }
             }
         }).mount("#shopping-list")
