@@ -9,11 +9,26 @@
 </head>
 <body>
     <div id="shopping-list">
-        <!-- You can use header.toLocaleUpperCase() to make the header is capitalized-->
-        <h1>{{ header ? header: 'Welcome to Shopping List' }}</h1>
+        <div class="header">
+            <!-- You can use header.toLocaleUpperCase() to make the header is capitalized-->
+            <h1>{{ header ? header: 'Welcome to Shopping List' }}</h1>
+            <!-- Add new buttons to show the edit form -->
+            <button 
+                v-if="editing" 
+                @click="doEdit(false)" 
+                class="btn btn-cancel">
+                Cancel
+            </button>
+            <button 
+                v-else 
+                @click="doEdit(true)" 
+                class="btn btn-primary">
+                Add Item
+            </button>
+        </div>
 
-        <!-- Add Item Form -->
-        <div class="add-item-form">
+        <!-- Edit Form -->
+        <div v-if="editing" class="add-item-form">
             <!-- Input for Data Binding and change the method in @keyup.enter-->
             <input 
                 @keyup.enter="saveItem"
@@ -31,6 +46,9 @@
             </button>
         </div>
 
+        <p v-if="items.length === 0">
+            Nice job! You've bought all your items.
+        </p>
         <!-- List Rendering in Vue.js 3 -->
         <ul>
             <li v-for="item in items" :key="item.id">
@@ -46,13 +64,14 @@
             data() {
                 return {
                     header: "Shopping List App",
+                    editing: false,
                     newItem: '',
                     newItemPriority: false,
                     // Initialize items
                     items: [
-                        {id: 1, label: "10 party hats", priority: true},
-                        {id: 2, label: "2 board games", priority: true},
-                        {id: 3, label: "20 cups", priority: false}
+                        // {id: 1, label: "10 party hats", priority: true},
+                        // {id: 2, label: "2 board games", priority: true},
+                        // {id: 3, label: "20 cups", priority: false}
                     ]
                 }
             },
@@ -61,6 +80,12 @@
                 // by add new method to push the item and clean the form after pushing
                 saveItem() {
                     this.items.push({id: this.items.length + 1, label: this.newItem, priority: this.newItemPriority})
+                    this.newItem = ''
+                    this.newItemPriority = false
+                },
+                // add new method to show edit form
+                doEdit(editing) {
+                    this.editing = editing
                     this.newItem = ''
                     this.newItemPriority = false
                 }
