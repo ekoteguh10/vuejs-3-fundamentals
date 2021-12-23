@@ -12,9 +12,23 @@
         <!-- You can use header.toLocaleUpperCase() to make the header is capitalized-->
         <h1>{{ header ? header: 'Welcome to Shopping List' }}</h1>
 
+        <!-- Input for Data Binding-->
+        <input type="text" v-model,trim="newItem" placeholder="Add an Item">
+        <label for="newItemPriority">
+            <input type="checkbox" v-model="newItemPriority">
+            High Priority
+        </label>
+
+        <p v-if="newItem">
+            <input type="checkbox" :checked="newItemPriority"> &nbsp;{{ newItem }}
+        </p>
+        
         <!-- List Rendering in Vue.js 3 -->
         <ul>
-            <li v-for="item in items" :key="item.id">{{ item.label }}</li>
+            <li v-for="item in items" :key="item.id">
+                <input type="checkbox" v-model="item.priority">
+                {{ item.label }}
+            </li>
         </ul>
     </div>
     
@@ -24,11 +38,13 @@
             data() {
                 return {
                     header: "Shopping List App",
+                    newItem: '',
+                    newItemPriority: false,
                     // Initialize items
                     items: [
-                        {id: 1, label: "10 party hats"},
-                        {id: 2, label: "2 board games"},
-                        {id: 3, label: "20 cups"}
+                        {id: 1, label: "10 party hats", priority: true},
+                        {id: 2, label: "2 board games", priority: true},
+                        {id: 3, label: "20 cups", priority: false}
                     ]
                 }
             }
