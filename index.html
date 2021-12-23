@@ -14,9 +14,9 @@
 
         <!-- Add Item Form -->
         <div class="add-item-form">
-            <!-- Input for Data Binding-->
+            <!-- Input for Data Binding and change the method in @keyup.enter-->
             <input 
-                @keyup.enter="items.push({id: items.length + 1, label: newItem, priority: newItemPriority})"
+                @keyup.enter="saveItem"
                 type="text" 
                 v-model,trim="newItem" 
                 placeholder="Add an Item">
@@ -26,7 +26,7 @@
             </label>
             <button 
                 class="btn btn-primary" 
-                @click="items.push({id: items.length + 1, label: newItem, priority: newItemPriority})">
+                @click="saveItem"> <!-- change to the method in @click -->
                 Save Item
             </button>
         </div>
@@ -54,6 +54,15 @@
                         {id: 2, label: "2 board games", priority: true},
                         {id: 3, label: "20 cups", priority: false}
                     ]
+                }
+            },
+            methods: {
+                // handling duplicated method of pushing the item
+                // by add new method to push the item and clean the form after pushing
+                saveItem() {
+                    this.items.push({id: this.items.length + 1, label: this.newItem, priority: this.newItemPriority})
+                    this.newItem = ''
+                    this.newItemPriority = false
                 }
             }
         }).mount("#shopping-list")
