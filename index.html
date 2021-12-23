@@ -39,7 +39,9 @@
                 <input type="checkbox" v-model="newItemPriority">
                 High Priority
             </label>
+            <!-- Add v-bind:disabled or just using :disabled to bind HTML attribute-->
             <button 
+                :disabled="newItem.length < 5"
                 class="btn btn-primary" 
                 @click="saveItem"> <!-- change to the method in @click -->
                 Save Item
