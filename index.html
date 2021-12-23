@@ -55,7 +55,7 @@
         <!-- Dynamically rendering CSS classes -->
         <ul>
             <li 
-                v-for="item in items" 
+                v-for="item in reversedItems" 
                 :key="item.id"
                 @click="togglePurchased(item)"
                 class="static-class"
@@ -76,12 +76,20 @@
                     newItemHighPriority: false,
                     // Initialize items
                     items: [
-                        // {id: 1, label: "10 party hats", purchased: false, highPriority: true},
-                        // {id: 2, label: "2 board games", purchased: true, highPriority: true},
-                        // {id: 3, label: "20 cups", purchased: false, highPriority: false}
+                        {id: 1, label: "10 party hats", purchased: false, highPriority: true},
+                        {id: 2, label: "2 board games", purchased: true, highPriority: true},
+                        {id: 3, label: "20 cups", purchased: false, highPriority: false}
                     ]
                 }
             },
+            // NOTE: implement computed when you need to change the presentation
+            computed: {
+                // add new method reverseItems to present the items DESC (put the last item created on the top of list)
+                reversedItems() {
+                    return [...this.items].reverse()
+                }
+            },
+            // NOTE: implement methods when you need to change the data
             methods: {
                 // handling duplicated method of pushing the item
                 // by add new method to push the item and clean the form after pushing
